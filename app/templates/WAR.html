@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px; /* Add margin between tables */
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .collapsible {
+            cursor: pointer;
+            padding: 10px;
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .collapsible::after {
+            content: '\002B'; /* Unicode for plus sign */
+            font-weight: bolder;
+            position: absolute;
+            right: 10px;
+        }
+
+        .collapsible.active::after {
+            content: '\2212'; /* Unicode for minus sign */
+            font-weight: bolder;
+        }
+        .content {
+            display: block; /* Change from display: none; to display: block; */
+            overflow: hidden;
+        }
+    </style>
+    <script>
+        function toggleSection(sectionId) {
+            var section = document.getElementById(sectionId);
+            if (section.style.display === "none") {
+                section.style.display = "block";
+                section.classList.add('active');
+            } else {
+                section.style.display = "none";
+                section.classList.remove('active');
+            }
+        }
+    </script>
+    <h1>Hi, {{ current_user.username }}!</h1>
+    {% if title %}
+    <title>{{ title }} - WAR</title>
+    {% else %}
+    <title>WAR</title>
+    {% endif %}
+</head>
+<body>
+<div>
+    Helpful Links:
+    <a href="{{ url_for('index') }}">Home</a>
+     <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
+     <a href="{{ url_for('roster') }}">Roster</a>
+     <a href="{{ url_for('roster') }}">WAR leaders</a>
+     <a href="{{ url_for('logout') }}">Logout</a>
+</div>
+<hr>
+
+
+
+<!-- gets all members in league -->
+<form action="{{ url_for('WAR') }}" method="GET">
+    <!-- Dropdown form for selecting type of WAR -->
+    <label for="type">Select type of WAR:</label>
+    <select id="type" name="type">
+        <!-- Populate with years from your data -->
+        <option value="Seasonal">Seasonal</option>
+        <option value="Offensive">Offensive</option>
+        <option value="Pitching">Pitching</option>
+    </select>
+
+    <!-- Dropdown form for selecting year -->
+
+   <label for="year">Select Year:</label>
+    <select id="year" name="year">
+        {% for year in years %}
+        <option value="{{ year }}">{{ year }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Submit</button>
+</form>
+
+
+<h1>Baseball Wins Above Replacement - {{ selected_year }}</h1>
+
+<div class="collapsible" onclick="toggleSection('WARStats')">WAR Statistics</div>
+    <div id="WARstats" class="content">
+        <table>
+            <!-- Column headers for player name and WAR statistic -->
+            <tr>
+                <th>Player</th>
+                <th>WAR Stat</th>
+            </tr>
+            <!-- Iterate through each player's statistics -->
+            {% for player_stat in war_stats %}
+            <tr>
+                <!-- Display player name -->
+                <td>{{ player_stat.player }}</td>
+                <!-- Display WAR statistic based on the selected type -->
+                {% if selected_type == 'Seasonal' %}
+                    <!-- Adjust the property according to your data structure -->
+                    <td>{{ player_stat.seasonal_war }}</td>
+                {% elif selected_type == 'Offensive' %}
+                    <!-- Adjust the property according to your data structure -->
+                    <td>{{ player_stat.offensive_war }}</td>
+                {% elif selected_type == 'Pitching' %}
+                    <!-- Adjust the property according to your data structure -->
+                    <td>{{ player_stat.pitching_war }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</body>
+</html>
