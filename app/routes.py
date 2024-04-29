@@ -4,13 +4,11 @@ from sqlalchemy.dialects.mysql import pymysql
 from datetime import datetime, timezone
 from urllib.parse import urlsplit
 
-from app import app
-from app.dbInteract import getPlayerBattingInfo, getPlayerFieldingInfo, getPlayerPitchingInfo, getTeamInfo
 from app.forms import LoginForm
 import sqlalchemy as sa
 from flask import render_template, flash, redirect, url_for
 from flask import request
-from flask_login import current_user, login_user
+from flask_login import login_user
 from flask_login import login_required
 from flask_login import logout_user
 
