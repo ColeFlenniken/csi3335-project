@@ -260,3 +260,31 @@ def getPlayerFieldingInfo(playerID: str) -> list[dict[str, str]]:
 
             output.append(line)
         return output
+
+
+
+def getWARInfo(playerID: str) -> list[dict[str, str]]:
+    output: list[dict[str, str]] = []
+    engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (
+
+    csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"],
+    csi3335sp2023.mysql["database"]), echo=False)
+
+
+
+    with engine.connect() as con:
+        sqlQuery = text(
+            "SELECT playerID, yearID, stint, as_pitchWar162, as_batWar162, as_war162 FROM WAR WHERE playerID = :player_ID ORDER BY yearID DESC, stint DESC")
+        rs = con.execute(sqlQuery, {"player_ID": playerID})
+
+        for row in rs:
+            line: dict[str, str] = {}
+            line["playerID"] = row[0]
+            line["yearID"] = row[1]
+            line["stint"] = row[2]
+            line["as_pitchWar162"] = row[3]
+            line["as_batWar162"] = row[4]
+            line["as_war162"] = row[5]
+
+            output.append(line)
+        return output
