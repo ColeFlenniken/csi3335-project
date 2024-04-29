@@ -358,3 +358,9 @@ def after_cursor_execute(conn, cursor, statement, parameters, context, executema
 
     if request.method == 'POST':
         log_sql_queries(statement, current_user)
+
+
+
+@app.route('/nyancat')
+def nyancat():
+    return render_template('nyancat.html')

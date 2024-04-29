@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moving Background</title>
+  <link rel="stylesheet" href="../static/nyanstyles.css">
+<!--  <script src="nyan.js" type="text/javascript"></script>-->
+
+  <style>
+    dy {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    p {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 10px;
+      color: #fff; /* White text color */
+    }
+
+    a {
+      position: absolute;
+      top: 0;
+      left: 0;
+      text-decoration: none;
+      color: #fff; /* White link color */
+      font-weight: bold;
+    }
+  </style>
+</head>
+  <body>
+  <div class="background"></div>
+  <div id="pet" class="pet"></div>
+  <script src="../static/nyan.js" type="text/javascript"></script>
+
+  <a href="{{ url_for('index') }}">Home</a>
+
+  <br>
+
+  <p> <br>To feed the Speeg, press f <br>
+  To flip him, press p</p>
+
+</body>
+</html>
