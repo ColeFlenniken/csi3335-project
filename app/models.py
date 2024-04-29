@@ -98,7 +98,7 @@ class User(UserMixin, db.Model):
 
 
 class RequestLog(db.Model):
-    # __tablename__ = 'request_log'
+
     __tablename__ = 'logging'
 
     id = db.Column(db.Integer, primary_key=True)
