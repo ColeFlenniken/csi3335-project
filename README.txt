@@ -4,7 +4,7 @@ DBSetup:
 2. Copy the teamSpencer.sql file
 3. Paste the file in whatever folder is your current
    directory when using your mariaDB database
-4. From the mariaDB terminal, run the command "\. teamSpecer.sql"
+4. From the mariaDB terminal, run the command "\. teamSpencer.sql"
 5. This will create the database used in the project
 
 Flask Setup:

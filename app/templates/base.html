@@ -1,28 +1,30 @@
-<html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% if title %}
         <title>{{ title }}</title>
         {% else %}
         <title>Home</title>
         {% endif %}
-        <link rel="stylesheet" type="text/css" href="/static/styles.css">
+        <link rel="stylesheet" type="text/css" href="../static/styles.css">
     </head>
     <body>
         <div class="helpful-links">
-        <p>Helpful Links:</p>
-        <ul>
-            <li><a href="{{ url_for('index') }}">Home</a></li>
-            {% if current_user.is_anonymous %}
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-            {% else %}
-                <li><a href="{{ url_for('user', username=current_user.username) }}">Profile</a></li>
-                {% if current_user.is_admin %}
-                    <li><a href="{{ url_for('admin_request_logs') }}">Admin Request Logs</a></li>
+            <p>Helpful Links:</p>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                {% if current_user.is_anonymous %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('user', username=current_user.username) }}">Profile</a></li>
+                    {% if current_user.is_admin %}
+                        <li><a href="{{ url_for('admin_request_logs') }}">Admin Request Logs</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
                 {% endif %}
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
-            {% endif %}
-        </ul>
-    </div>
+            </ul>
+        </div>
         <hr>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
