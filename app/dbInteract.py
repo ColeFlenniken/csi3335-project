@@ -1,27 +1,23 @@
 import sqlalchemy
 from flask_login import current_user
 from sqlalchemy.sql import text
-<<<<<<< HEAD
+
 from app import csi3335sp2023
-=======
+
 from app import csi3335sp2023, db
 from app.models import RequestLog
 from datetime import datetime, timezone
 from flask import request
 
 # from app.routes import log_sql_queries
->>>>>>> 7093add889c9a4608785a35037386794623fd743
 
 
 def getTeamInfo(teamID: str, yearID: int) -> list[dict[str, str]]:
     output: list[dict[str, str]] = []
-<<<<<<< HEAD
+
     engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"], csi3335sp2023.mysql["database"]), echo=False)
 
-=======
-    engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (
-    csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"], csi3335sp2023.mysql["database"]), echo=False)
->>>>>>> 7093add889c9a4608785a35037386794623fd743
+
     with engine.connect() as con:
         print(teamID)
         print(yearID)
@@ -90,14 +86,10 @@ def getTeamInfo(teamID: str, yearID: int) -> list[dict[str, str]]:
 
 
 def getName(playerID: int) -> str:
-<<<<<<< HEAD
 
-    engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"], csi3335sp2023.mysql["database"]), echo=False)
-
-=======
     engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (
     csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"], csi3335sp2023.mysql["database"]), echo=False)
->>>>>>> 7093add889c9a4608785a35037386794623fd743
+
     with engine.connect() as con:
         sqlQuery = text("SELECT nameFirst, nameLast FROM people WHERE playerID = :player_ID")
         rs = con.execute(sqlQuery, {"player_ID": playerID})
@@ -113,14 +105,11 @@ def getName(playerID: int) -> str:
 
 def getBattingInfoByTeamIDandYearID(teamID: str, yearID: int) -> list[dict[str, str]]:
     output: list[dict[str, str]] = []
-<<<<<<< HEAD
+
 
     engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"], csi3335sp2023.mysql["database"]), echo=False)
 
-=======
-    engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (
-    csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"], csi3335sp2023.mysql["database"]), echo=False)
->>>>>>> 7093add889c9a4608785a35037386794623fd743
+
     with engine.connect() as con:
         sqlQuery = text(
             "SELECT playerid, nameFirst, nameLast, yearID, b_G, b_AB, b_R, b_H, b_HR, b_RBI, teamID, position, b_BB, b_HBP, b_SF, b_2B, b_3B FROM batting JOIN people USING(playerid) NATURAL JOIN fielding WHERE teamID = :team_ID AND yearID = :year_ID ORDER BY nameLast ASC, stint DESC")
@@ -152,10 +141,6 @@ def getBattingInfoByTeamIDandYearID(teamID: str, yearID: int) -> list[dict[str, 
 
     return output
 
-
-def getPlayerBattingInfo(playerID: str) -> list[dict[str,str]]:
-    output : list[dict[str,str]] = []
-    engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"], csi3335sp2023.mysql["database"]), echo=False)
 
 
 def getPitchingInfoByTeamIDandYearID(teamID: str, yearID: int) -> list[dict[str, str]]:
@@ -209,10 +194,6 @@ def getPlayerBattingInfo(playerID: str) -> list[dict[str, str]]:
     output: list[dict[str, str]] = []
     engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (
     csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"], csi3335sp2023.mysql["database"]), echo=False)
-<<<<<<< HEAD
-
-=======
->>>>>>> 7093add889c9a4608785a35037386794623fd743
     with engine.connect() as con:
         sqlQuery = text("SELECT nameFirst, nameLast,yearID, b_G, b_AB, b_R, b_H, b_HR, b_RBI, teamID"
                         " FROM batting join PEOPLE USING(playerID) WHERE playerID = :player_ID ORDER BY yearID DESC, stint DESC")
@@ -236,19 +217,12 @@ def getPlayerBattingInfo(playerID: str) -> list[dict[str, str]]:
         return output
 
 
-def getPlayerPitchingInfo(playerID: str) -> list[dict[str,str]]:
-    output: list[dict[str,str]] = []
-    engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"], csi3335sp2023.mysql["database"]), echo=False)
 
 
 def getPlayerPitchingInfo(playerID: str) -> list[dict[str, str]]:
     output: list[dict[str, str]] = []
     engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (
     csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"], csi3335sp2023.mysql["database"]), echo=False)
-<<<<<<< HEAD
-
-=======
->>>>>>> 7093add889c9a4608785a35037386794623fd743
 
     with engine.connect() as con:
         sqlQuery = text("SELECT nameFirst, nameLast,yearID, teamID, p_W, p_L, p_G, p_GS, p_H, p_HR, p_SV, p_SO"
@@ -276,17 +250,11 @@ def getPlayerPitchingInfo(playerID: str) -> list[dict[str, str]]:
 
 def getPlayerFieldingInfo(playerID: str) -> list[dict[str, str]]:
     output: list[dict[str, str]] = []
-    engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (
-<<<<<<< HEAD
-
-    csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"],
+    engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"],
     csi3335sp2023.mysql["database"]), echo=False)
 
 
-=======
-        csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"], csi3335sp2023.mysql["database"]),
-                                      echo=False)
->>>>>>> 7093add889c9a4608785a35037386794623fd743
+
 
     with engine.connect() as con:
         sqlQuery = text(
@@ -314,10 +282,6 @@ def getPlayerFieldingInfo(playerID: str) -> list[dict[str, str]]:
         return output
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 7093add889c9a4608785a35037386794623fd743
 def getWARInfo(playerID: str) -> list[dict[str, str]]:
     output: list[dict[str, str]] = []
     engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (
@@ -325,22 +289,17 @@ def getWARInfo(playerID: str) -> list[dict[str, str]]:
     csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"],
     csi3335sp2023.mysql["database"]), echo=False)
 
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> 7093add889c9a4608785a35037386794623fd743
 
     with engine.connect() as con:
         sqlQuery = text(
             "SELECT playerID, yearID, stint, as_pitchWar162, as_batWar162, as_war162 FROM WAR WHERE playerID = :player_ID ORDER BY yearID DESC, stint DESC")
         rs = con.execute(sqlQuery, {"player_ID": playerID})
 
-<<<<<<< HEAD
-=======
+
         log_sql_queries(sqlQuery, current_user)
 
->>>>>>> 7093add889c9a4608785a35037386794623fd743
+
         for row in rs:
             line: dict[str, str] = {}
             line["playerID"] = row[0]
@@ -352,8 +311,7 @@ def getWARInfo(playerID: str) -> list[dict[str, str]]:
 
             output.append(line)
         return output
-<<<<<<< HEAD
-=======
+
 
 
 # Define a function to log SQL queries
@@ -393,4 +351,4 @@ def log_sql_queries(sql, current_user):
     db.session.add(log_entry)
     # Commit the transaction to save the log entry
     db.session.commit()
->>>>>>> 7093add889c9a4608785a35037386794623fd743
+

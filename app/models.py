@@ -70,10 +70,7 @@ def load_user(id):
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
-<<<<<<< HEAD
-=======
 
->>>>>>> 7093add889c9a4608785a35037386794623fd743
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True,
                                                 unique=True)
@@ -101,10 +98,7 @@ class User(UserMixin, db.Model):
 
 
 class RequestLog(db.Model):
-<<<<<<< HEAD
-=======
-    # __tablename__ = 'request_log'
->>>>>>> 7093add889c9a4608785a35037386794623fd743
+
     __tablename__ = 'logging'
 
     id = db.Column(db.Integer, primary_key=True)
