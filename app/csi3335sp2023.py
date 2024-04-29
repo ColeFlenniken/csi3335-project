@@ -1,1 +1,0 @@
-mysql = {'location':'localhost','user':'root','password':'791638cF!!','database':'teamSpencer'}
