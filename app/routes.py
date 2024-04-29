@@ -24,11 +24,14 @@ from sqlalchemy import event
 from app.models import User
 
 
+
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
-    return render_template('index.html', title='Home')
+    teams_info = getAllTeams()
+
+    return render_template('index.html', teams=teams_info)
 
 @app.route('/roster/<teamid>/<yearid>')
 @login_required

@@ -84,6 +84,74 @@ def getTeamInfo(teamID: str, yearID: int) -> list[dict[str, str]]:
             output.append(line)
     return output
 
+def getAllTeams() -> list[dict[str, str]]:
+    output: list[dict[str, str]] = []
+
+    engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"], csi3335sp2023.mysql["database"]), echo=False)
+
+
+    with engine.connect() as con:
+
+        sqlQuery = text("SELECT team_name, team_W, team_L, team_R, team_HR, team_BB, "
+            "team_SO, team_AB, team_H, team_2B, team_3B, team_HR, team_BB,"
+            " team_SO, team_SB, team_CS, team_HBP, team_SF, team_RA,"
+            " team_ER, team_ERA, team_CG, team_SHO, team_SV, team_IPouts, "
+            "team_HA, team_HRA, team_BBA, team_SOA, team_E, team_DP, team_FP, "
+            "team_attendance, team_BPF, team_PPF, team_projW, team_projL, team_rank, team_G, franchID,"
+            "WSWin, Divwin, lgwin "
+            "FROM teams ")
+        rs = con.execute(sqlQuery)
+
+        log_sql_queries(sqlQuery, current_user)
+
+        for row in rs:
+            line: dict[str, str] = {}
+            line["team_name"] = str(row[0])
+            line["team_W"] = str(row[1])
+            line["team_L"] = str(row[2])
+            line["team_R"] = str(row[3])
+            line["team_HR"] = str(row[4])
+            line["team_BB"] = str(row[5])
+            line["team_SO"] = str(row[6])
+            line["team_AB"] = str(row[7])
+            line["team_H"] = str(row[8])
+            line["team_2B"] = str(row[9])
+            line["team_3B"] = str(row[10])
+            line["team_HR"] = str(row[11])
+            line["team_BB"] = str(row[12])
+            line["team_SO"] = str(row[13])
+            line["team_SB"] = str(row[14])
+            line["team_CS"] = str(row[15])
+            line["team_HBP"] = str(row[16])
+            line["team_SF"] = str(row[17])
+            line["team_RA"] = str(row[18])
+            line["team_ER"] = str(row[19])
+            line["team_ERA"] = str(row[20])
+            line["team_CG"] = str(row[21])
+            line["team_SHO"] = str(row[22])
+            line["team_SV"] = str(row[23])
+            line["team_IPouts"] = str(row[24])
+            line["team_HA"] = str(row[25])
+            line["team_HRA"] = str(row[26])
+            line["team_BBA"] = str(row[27])
+            line["team_SOA"] = str(row[28])
+            line["team_E"] = str(row[29])
+            line["team_DP"] = str(row[30])
+            line["team_FP"] = str(row[31])
+            line["team_attendance"] = str(row[32])
+            line["team_BPF"] = str(row[33])
+            line["team_PPF"] = str(row[34])
+            line["team_projW"] = str(row[35])
+            line["team_projL"] = str(row[36])
+            line["team_rank"] = row[37]
+            line["team_G"] = str(row[38])
+            line["franchID"] = str(row[39])
+            line["WSWin"] = str(row[40])
+            line["divWin"] = str(row[41])
+            line["LGwin"] = str(row[42])
+            output.append(line)
+    return output
+
 
 def getName(playerID: int) -> str:
 
