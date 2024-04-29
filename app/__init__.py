@@ -1,7 +1,7 @@
 from flask import Flask
 import sqlalchemy
 from sqlalchemy.sql import text
-from app.dbInteract import getPlayerFieldingInfo
+# from app.dbInteract import getPlayerFieldingInfo
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -30,7 +30,7 @@ if not app.debug:
     app.logger.addHandler(file_handler)
 
     app.logger.setLevel(logging.INFO)
-    print(getPlayerFieldingInfo('aaronha01'))
+    # print(getPlayerFieldingInfo('aaronha01'))
     app.logger.info('Microblog startup')
 
 
