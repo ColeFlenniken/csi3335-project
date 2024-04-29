@@ -69,6 +69,7 @@ def load_user(id):
     return db.session.get(User, int(id))
 
 class User(UserMixin, db.Model):
+    __tablename__ = 'users'
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True,
                                                 unique=True)
@@ -96,7 +97,7 @@ class User(UserMixin, db.Model):
 
 
 class RequestLog(db.Model):
-    __tablename__ = 'request_log'
+    __tablename__ = 'logging'
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)

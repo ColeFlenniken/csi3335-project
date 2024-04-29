@@ -4,7 +4,7 @@ from app import csi3335sp2023
 
 def getTeamInfo(teamID: str, yearID: int) -> list[dict[str, str]]:
     output: list[dict[str, str]] = []
-    engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (csi3335.mysql["user"], csi3335.mysql["password"], csi3335.mysql["location"], csi3335.mysql["database"]), echo=False)
+    engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"], csi3335sp2023.mysql["database"]), echo=False)
     with engine.connect() as con:
         print(teamID)
         print(yearID)
@@ -26,7 +26,7 @@ def getTeamInfo(teamID: str, yearID: int) -> list[dict[str, str]]:
     return output
 
 def getName(playerID: int) -> str:
-    engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (csi3335.mysql["user"], csi3335.mysql["password"], csi3335.mysql["location"], csi3335.mysql["database"]), echo=False)
+    engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"], csi3335sp2023.mysql["database"]), echo=False)
     with engine.connect() as con:
         sqlQuery = text("SELECT nameFirst, nameLast FROM people WHERE playerID = :player_ID")
         rs = con.execute(sqlQuery, {"player_ID": playerID})
@@ -38,7 +38,7 @@ def getName(playerID: int) -> str:
 
 def getBattingInfoByTeamIDandYearID(teamID: str, yearID: int) -> list[dict[str, str]]:
     output: list[dict[str, str]] = []
-    engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (csi3335.mysql["user"], csi3335.mysql["password"], csi3335.mysql["location"], csi3335.mysql["database"]), echo=False)
+    engine = sqlalchemy.create_engine("mysql+pymysql://%s:%s@%s/%s" % (csi3335sp2023.mysql["user"], csi3335sp2023.mysql["password"], csi3335sp2023.mysql["location"], csi3335sp2023.mysql["database"]), echo=False)
     with engine.connect() as con:
         sqlQuery = text("SELECT playerid, nameFirst, nameLast, yearID, b_G, b_AB, b_R, b_H, b_HR, b_RBI, teamID, position FROM batting JOIN people USING(playerid) NATURAL JOIN fielding WHERE teamID = :team_ID AND yearID = :year_ID ORDER BY nameLast DESC, stint DESC")
         rs = con.execute(sqlQuery, {"team_ID": teamID, "year_ID": yearID})
