@@ -1,0 +1,39 @@
+/* nyanstyles.css */
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+.background {
+    width: 200%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: url(data:image/png;base64,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);
+    animation: scrollBackground 20s linear infinite;
+}
+
+@keyframes scrollBackground {
+    0% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: 0% 0;
+    }
+}
+
+.pet {
+    width: 150px;
+    height: 150px;
+    background-image: url(https://www.ecs.baylor.edu/sites/g/files/ecbvkj776/files/2022-11/Seegle.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.5s ease-in-out;
+}
