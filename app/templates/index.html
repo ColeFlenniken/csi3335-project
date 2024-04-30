@@ -1,6 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <h1>Select Team and Year</h1>
+    <form id="roster-form" method="GET">
+        <label for="team-dropdown">Select Team:</label>
+        <select id="team-dropdown" name="team">
+            {% for team_id in team_ids %}
+            <option value="{{ team_id }}">{{ team_id }}</option>
+            {% endfor %}
+        </select>
+        <label for="year-dropdown">Select Year:</label>
+        <select id="year-dropdown" name="year">
+            <!-- Year options will be populated dynamically based on the selected team -->
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#team-dropdown').change(function() {
+                var teamId = $(this).val();
+                var yearDropdown = $('#year-dropdown');
+                yearDropdown.empty();
+                var years = {{ year_ids | tojson }};
+                if (teamId in years) {
+                    $.each(years[teamId], function(index, year) {
+                        yearDropdown.append($('<option></option>').attr('value', year).text(year));
+                    });
+                }
+            });
+
+            $('#roster-form').submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
+                var teamId = $('#team-dropdown').val();
+                var yearId = $('#year-dropdown').val();
+                window.location.href = '/roster/' + teamId + '/' + yearId; // Redirect to roster page
+            });
+        });
+    </script>
 <script>
     function nyancat() {
         document.getElementById("myButton").addEventListener("click", function () {
@@ -37,4 +75,3 @@
 <h1>Hi, {{ current_user.username }}!</h1>
 <button type="button" id="myButton" onclick="nyancat()"></button>
 {% endblock %}
-
