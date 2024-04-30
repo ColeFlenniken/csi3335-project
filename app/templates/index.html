@@ -1,37 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <!-- Dropdown form for selecting team -->
-    <form action="{{ url_for('index') }}" method="GET">
-        <label for="team">Select Team:</label>
-        <select id="team" name="team">
-            <!--for every team in db-->
-             <option value="NA" selected>NA</option>
+<script>
+      // Define the teams data in JavaScript
+
+        /*var teamsData = [
             {% for team in teams %}
-            <option value="teamName">{{ team.name }}</option>
+            {
+                teamName: "{{ team.teamName }}",
+                teamID: "{{ team.teamID }}",
+                yearID: "{{ team.yearID }}"
+            },
             {% endfor %}
-        </select>
-
-        <!-- Dropdown form for selecting year -->
-        <label for="year" id="yearLabel" style="display: none;">Select Year:</label>
-        <select id="year" name="year" style="display: none;"></select>
-
-        <!--<label for="year" id="yearLabel" style="display: none;">Select Year:</label>
-        <select id="year" name="year" style="display: none;">
-            {% for year in years %}
-            <option value="year"> year </option>
-            {% endfor %}
-        </select>-->
+        ];*/
 
 
-
-
-
-        <button type="submit">Submit</button>
-    </form>
-
-    <script>
-        // Function to handle form submission
     function handleSubmit(event) {
         event.preventDefault(); // Prevent default form submission behavior
 
@@ -49,33 +32,43 @@
     }
 
         // Function to show or hide the year dropdown based on team selection
-        function toggleYearDropdown() {
-            var teamSelect = document.getElementById('team');
-            var yearSelect = document.getElementById('year');
-            var yearLabel = document.getElementById('yearLabel');
+    function toggleYearDropdown() {
+        var teamSelect = document.getElementById('team');
+        var yearSelect = document.getElementById('year');
+        var yearLabel = document.getElementById('yearLabel');
 
-            // Get the selected team's data-years attribute
-            var selectedTeam = teamSelect.options[teamSelect.selectedIndex];
-            var years = selectedTeam.dataset.years.split(',');
-
-            // Clear previous options and add new ones based on the selected team
-            yearSelect.innerHTML = '';
-            years.forEach(year => {
-                var option = document.createElement('option');
-                option.value = year;
-                option.textContent = year;
-                yearSelect.appendChild(option);
-            });
+        // Get the selected team's data-years attribute
+        var selectedTeam = teamSelect.options[teamSelect.selectedIndex];
 
 
-            if (teamSelect.value !== 'NA') {
-                yearSelect.style.display = 'block'; // Show year select
-                yearLabel.style.display = 'block'; // Show year label
-            } else {
-                yearSelect.style.display = 'none'; // Hide year select
-                yearLabel.style.display = 'none'; // Hide year label
-            }
+        var years = selectedTeam.dataset.years.split(',');
+
+        var yearData
+        // Get the ID of the selected team
+       var selectedTeamID = teamSelect.value;
+
+       // Find the selected team in the teams list
+       var selectedTeam = teams.find(team => team.teamID === selectedTeamID);
+
+        // Clear previous options and add new ones based on the selected team
+        yearSelect.innerHTML = '';
+        years.forEach(year => {
+            var option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            yearSelect.appendChild(option);
+        });
+
+
+        if (teamSelect.value !== 'NA') {
+            yearSelect.style.display = 'block'; // Show year select
+            yearLabel.style.display = 'block'; // Show year label
         }
+        else {
+            yearSelect.style.display = 'none'; // Hide year select
+            yearLabel.style.display = 'none'; // Hide year label
+        }
+    }
 
         // Call the function when the page loads and when the team selection changes
         window.addEventListener('DOMContentLoaded', toggleYearDropdown);
@@ -84,4 +77,32 @@
         document.querySelector('form').addEventListener('submit', handleSubmit);
 
     </script>
+
+
+
+    <!-- Dropdown form for selecting team -->
+    <form action="{{ url_for('index') }}" method="GET">
+        <label for="team">Select Team:</label>
+        <select id="team" name="team">
+            <!--for every team in db-->
+             <option value="NA" selected>NA</option>
+            {% for team in teams %}
+            <option value="teamName">{{ team.teamID }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Dropdown form for selecting year -->
+        <label for="year" id="yearLabel">Select Year:</label>
+        <select id="year" name="year" ></select>
+
+
+
+
+
+
+
+        <button type="submit">Submit</button>
+    </form>
+
+
 {% endblock %}

@@ -30,7 +30,6 @@ from app.models import User
 @login_required
 def index():
     teams_info = getAllTeams()
-
     return render_template('index.html', teams=teams_info)
 
 @app.route('/roster/<teamid>/<yearid>')

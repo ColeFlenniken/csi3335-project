@@ -98,14 +98,18 @@ def getAllTeams() -> list[dict[str, str]]:
             " team_ER, team_ERA, team_CG, team_SHO, team_SV, team_IPouts, "
             "team_HA, team_HRA, team_BBA, team_SOA, team_E, team_DP, team_FP, "
             "team_attendance, team_BPF, team_PPF, team_projW, team_projL, team_rank, team_G, franchID,"
-            "WSWin, Divwin, lgwin "
+            "WSWin, Divwin, lgwin, teamID,yearID "
             "FROM teams ")
+        #sqlQuery = text("SELECT teamid, yearid FROM teams "
+         #               "FROM teams ")
         rs = con.execute(sqlQuery)
 
         log_sql_queries(sqlQuery, current_user)
 
         for row in rs:
             line: dict[str, str] = {}
+            # line["teamID"] = str(row[0])
+            # line["teamID"] = str(row[1])
             line["team_name"] = str(row[0])
             line["team_W"] = str(row[1])
             line["team_L"] = str(row[2])
@@ -149,6 +153,8 @@ def getAllTeams() -> list[dict[str, str]]:
             line["WSWin"] = str(row[40])
             line["divWin"] = str(row[41])
             line["LGwin"] = str(row[42])
+            line["teamID"] = str(row[43])
+            line["yearID"] = str(row[44])
             output.append(line)
     return output
 
