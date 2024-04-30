@@ -70,8 +70,9 @@ def player_stats(player_id):
     batting_info = getPlayerBattingInfo(player_id)
     pitching_info = getPlayerPitchingInfo(player_id)
     fielding_info = getPlayerFieldingInfo(player_id)
+    war_info = getWARInfo(player_id)
     return render_template('player.html', player_id=player_id, batting=batting_info, pitching=pitching_info,
-                           fielding=fielding_info, player=player_name)
+                           fielding=fielding_info, war=war_info, player=player_name)
 
 
 @app.route('/login', methods=['GET', 'POST'])

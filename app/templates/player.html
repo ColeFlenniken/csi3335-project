@@ -252,6 +252,33 @@
 
 </div>
 
+
+<h1>WAR Stats</h1>
+<div class="collapsible" onclick="toggleSection('warStats')">WAR Statistics</div>
+<div id="warStats" class="content">
+    <table id="warTable">
+        <tr>
+            <th onclick="sortTable('warTable', 0)">Year</th>
+            <th onclick="sortTable('warTable', 5)">Team</th>
+            <th onclick="sortTable('warTable', 1)">Stint</th>
+            <th onclick="sortTable('warTable', 2)">Pitch WAR 162</th>
+            <th onclick="sortTable('warTable', 3)">Bat WAR 162</th>
+            <th onclick="sortTable('warTable', 4)">WAR 162</th>
+        </tr>
+        {% for war_stat in war %}
+        <tr>
+            <td>{{ war_stat.yearID }}</td>
+            <td><a href="{{ url_for('roster', teamid=war_stat.teamID, yearid=war_stat.yearID) }}">{{ war_stat.teamID }}</a></td>
+<!--            <td>{{ war_stat.teamID }}</td>-->
+            <td>{{ war_stat.stint }}</td>
+            <td>{{ war_stat.as_pitchWar162 }}</td>
+            <td>{{ war_stat.as_batWar162 }}</td>
+            <td>{{ war_stat.as_war162 }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
 </body>
 {%endblock%}
 </html>
