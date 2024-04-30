@@ -1,5 +1,5 @@
 from sqlalchemy.exc import NoResultFound
-
+from sqlalchemy.sql import insert, update
 from sqlalchemy.dialects.mysql import pymysql
 from datetime import datetime, timezone
 from urllib.parse import urlsplit
@@ -20,15 +20,37 @@ from app.forms import LoginForm
 from app.forms import RegistrationForm
 from app.models import RequestLog
 from sqlalchemy.engine import Engine
-from sqlalchemy import event
+from sqlalchemy import event, inspect, values
 from app.models import User
 
 
-@app.route('/')
+
+
 @app.route('/index')
 @login_required
 def index():
-    return render_template('index.html', title='Home')
+    # Call the getAllTeams function to fetch all teams and their information
+    all_teams = getAllTeams()
+
+    # Create empty lists to store team IDs and corresponding year IDs
+    team_ids = []
+    year_ids = {}
+
+    # Iterate through the all teams data to populate the lists
+    for team in all_teams:
+        team_id = team['teamID']
+        year_id = team['yearID']
+        # Add team ID to the list if it's not already there
+        if team_id not in team_ids:
+            team_ids.append(team_id)
+        # Add year ID to the dictionary under the corresponding team ID
+        if team_id not in year_ids:
+            year_ids[team_id] = []
+        year_ids[team_id].append(year_id)
+
+    # Pass team IDs and year IDs to the template
+    return render_template('index.html', team_ids=team_ids, year_ids=year_ids)
+
 
 @app.route('/roster/<teamid>/<yearid>')
 @login_required
@@ -58,8 +80,12 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = db.session.scalar(
-            sa.select(User).where(User.username == form.username.data))
+        user_query = sa.select(User).where(User.username == form.username.data)
+        user = db.session.scalar(user_query)
+
+        # Get the SQL statement from the query object
+        sql_statement = str(user_query)
+
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
@@ -67,6 +93,9 @@ def login():
         next_page = request.args.get('next')
         if not next_page or urlsplit(next_page).netloc != '':
             next_page = url_for('index')
+
+        # Pass the SQL statement to log_sql_queries
+        log_sql_queries(sql_statement, current_user)
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
@@ -86,7 +115,29 @@ def register():
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
+
+        # Iterate over newly added objects
+        for obj in db.session.new:
+            # Check if the object is an instance of User
+            if isinstance(obj, User):
+                # Construct the column-value pairs for insertion
+                values = {
+                    'username': obj.username,
+                    'email': obj.email,
+                    # Add more column-value pairs as needed
+                }
+
+                # Construct the insert statement
+                insert_stmt = insert(User.__table__).values(values)
+
+                # Compile the insert statement
+                sql_statement = str(insert_stmt.compile())
+
+
         db.session.commit()
+        # Log the SQL statement
+        log_sql_queries(sql_statement, user)
+
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
@@ -95,7 +146,14 @@ def register():
 @app.route('/user/<username>')
 @login_required
 def user(username):
-    user = db.first_or_404(sa.select(User).where(User.username == username))
+    user_query = sa.select(User).where(User.username == username)
+    user = db.first_or_404(user_query)
+
+    # Get the SQL statement from the query object
+    sql_statement = str(user_query)
+
+    # Pass the SQL statement to log_sql_queries
+    log_sql_queries(sql_statement, current_user)
 
     return render_template('user.html', user=user)
 
@@ -124,6 +182,24 @@ def edit_profile():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
         current_user.favorite_team = form.favorite_team.data
+
+        # Construct the column-value pairs for update
+        values = {
+            'username': current_user.username,
+            'about_me': current_user.about_me,
+            'favorite_team': current_user.favorite_team,
+            # Add more column-value pairs as needed
+        }
+
+        # Construct the update statement
+        update_stmt = update(User.__table__).where(User.id == current_user.id).values(values)
+
+        # Compile the update statement
+        sql_statement = str(update_stmt.compile())
+
+        # Log the SQL statement
+        log_sql_queries(sql_statement, current_user)
+
         db.session.commit()
         flash('Your changes have been saved.')
         return redirect(url_for('edit_profile'))
@@ -210,9 +286,13 @@ def admin_request_logs():
                            user_id_exists=user_id_exists, show_all=show_all, username=username)
 
 @app.before_request
+# @app.after_request
 def log_request():
-    # Check if the current request is for logging SQL queries or during logout
-    if request.endpoint == 'log_sql_queries' or request.endpoint == 'logout' or request.endpoint == 'login' or request.endpoint == 'index' or request.endpoint == 'register':
+    # List of endpoints where user_id should not be extracted
+    excluded_endpoints = ['log_sql_queries', 'index', 'login', '/', 'register']  # , 'logout'
+
+    # Check if the current request is for logging SQL queries or excluded endpoints
+    if request.endpoint in excluded_endpoints:
         return
 
     # Retrieve user_id if the user is authenticated
@@ -291,5 +371,18 @@ def before_cursor_execute(conn, cursor, statement, parameters, context, executem
 
 @event.listens_for(Engine, "after_cursor_execute", once=True)
 def after_cursor_execute(conn, cursor, statement, parameters, context, executemany):
+    # List of endpoints where user_id should not be extracted
+    excluded_endpoints = ['log_sql_queries', 'logout', 'login', 'register'] #, 'index', 'register']
+
+    # Check if the current request is for logging SQL queries or excluded endpoints
+    if request.endpoint in excluded_endpoints:
+        return
+
     if request.method == 'POST':
         log_sql_queries(statement, current_user)
+
+
+
+@app.route('/nyancat')
+def nyancat():
+    return render_template('nyancat.html')
