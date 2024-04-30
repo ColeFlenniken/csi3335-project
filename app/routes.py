@@ -25,12 +25,32 @@ from app.models import User
 
 
 
-@app.route('/')
+
 @app.route('/index')
 @login_required
 def index():
-    teams_info = getAllTeams()
-    return render_template('index.html', teams=teams_info)
+    # Call the getAllTeams function to fetch all teams and their information
+    all_teams = getAllTeams()
+
+    # Create empty lists to store team IDs and corresponding year IDs
+    team_ids = []
+    year_ids = {}
+
+    # Iterate through the all teams data to populate the lists
+    for team in all_teams:
+        team_id = team['teamID']
+        year_id = team['yearID']
+        # Add team ID to the list if it's not already there
+        if team_id not in team_ids:
+            team_ids.append(team_id)
+        # Add year ID to the dictionary under the corresponding team ID
+        if team_id not in year_ids:
+            year_ids[team_id] = []
+        year_ids[team_id].append(year_id)
+
+    # Pass team IDs and year IDs to the template
+    return render_template('index.html', team_ids=team_ids, year_ids=year_ids)
+
 
 @app.route('/roster/<teamid>/<yearid>')
 @login_required
