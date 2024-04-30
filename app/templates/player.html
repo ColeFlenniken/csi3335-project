@@ -228,7 +228,7 @@
         {% for f in fielding if f.yearID == fielder.yearID and f.teamID == fielder.teamID %}
         {% set _ = positions.append(f.position) %}
         {% for key, value in f.items() if key.startswith('f_') %}
-        {% if stats.get(key) is not none %}
+        {% if stats.get(key) is not none and value is not none %}
         {% set _ = stats.update({key: stats.get(key) + value}) %}
         {% endif %}
         {% endfor %}
@@ -259,11 +259,11 @@
     <table id="warTable">
         <tr>
             <th onclick="sortTable('warTable', 0)">Year</th>
-            <th onclick="sortTable('warTable', 5)">Team</th>
-            <th onclick="sortTable('warTable', 1)">Stint</th>
-            <th onclick="sortTable('warTable', 2)">Pitch WAR 162</th>
-            <th onclick="sortTable('warTable', 3)">Bat WAR 162</th>
-            <th onclick="sortTable('warTable', 4)">WAR 162</th>
+            <th onclick="sortTable('warTable', 1)">Team</th>
+            <th onclick="sortTable('warTable', 2)">Stint</th>
+            <th onclick="sortTable('warTable', 3)">Pitch WAR 162</th>
+            <th onclick="sortTable('warTable', 4)">Bat WAR 162</th>
+            <th onclick="sortTable('warTable', 5)">WAR 162</th>
         </tr>
         {% for war_stat in war %}
         <tr>
