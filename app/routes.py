@@ -27,6 +27,7 @@ from app.models import User
 
 
 @app.route('/index')
+@app.route('/')
 @login_required
 def index():
     # Call the getAllTeams function to fetch all teams and their information
@@ -310,6 +311,7 @@ def log_request():
         f"Headers: {dict(request.headers)}\n"
         f"Remote Addr: {request.remote_addr}\n"
     )
+
     # Log the request
     log_entry = RequestLog(user_id=user_id,
                            timestamp=datetime.now(timezone.utc),

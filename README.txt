@@ -75,4 +75,6 @@ WAR per 162 games. These statistics can be viewed for a specific player by navig
 
 4. A secret surprise by pressing the rainbow button in the middle of the index page
 
+5. A toggleable option for showing advanced stats for a team
+
 
