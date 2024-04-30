@@ -367,7 +367,7 @@ def getWARInfo(playerID: str) -> list[dict[str, str]]:
 
     with engine.connect() as con:
         sqlQuery = text(
-            "SELECT playerID, yearID, stint, as_pitchWar162, as_batWar162, as_war162 FROM WAR WHERE playerID = :player_ID ORDER BY yearID DESC, stint DESC")
+            "SELECT advancedstats.playerID, advancedstats.yearID, advancedstats.stint, advancedstats.as_pitchWar162, advancedstats.as_batWar162, advancedstats.as_war162, batting.teamID FROM advancedstats JOIN batting ON advancedstats.yearID = batting.yearId AND advancedstats.playerID = batting.playerID AND advancedstats.stint = batting.stint WHERE advancedstats.playerID = :player_ID ORDER BY advancedstats.yearID DESC, advancedstats.stint DESC")
         rs = con.execute(sqlQuery, {"player_ID": playerID})
 
 
@@ -382,6 +382,7 @@ def getWARInfo(playerID: str) -> list[dict[str, str]]:
             line["as_pitchWar162"] = row[3]
             line["as_batWar162"] = row[4]
             line["as_war162"] = row[5]
+            line["teamID"] = row[6]
 
             output.append(line)
         return output

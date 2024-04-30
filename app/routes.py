@@ -71,8 +71,9 @@ def player_stats(player_id):
     batting_info = getPlayerBattingInfo(player_id)
     pitching_info = getPlayerPitchingInfo(player_id)
     fielding_info = getPlayerFieldingInfo(player_id)
+    war_info = getWARInfo(player_id)
     return render_template('player.html', player_id=player_id, batting=batting_info, pitching=pitching_info,
-                           fielding=fielding_info, player=player_name)
+                           fielding=fielding_info, war=war_info, player=player_name)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -175,20 +176,20 @@ def user(username):
 def edit_profile():
     form = EditProfileForm(current_user.username)
 
-    teams = [('Team A', 'Team A'), ('Team B', 'Team B'), ('Team C', 'Team C')]
-
-    form.favorite_team.choices = teams
+    # teams = [('Team A', 'Team A'), ('Team B', 'Team B'), ('Team C', 'Team C')]
+    #
+    # form.favorite_team.choices = teams
 
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
-        current_user.favorite_team = form.favorite_team.data
+        # current_user.favorite_team = form.favorite_team.data
 
         # Construct the column-value pairs for update
         values = {
             'username': current_user.username,
             'about_me': current_user.about_me,
-            'favorite_team': current_user.favorite_team,
+            # 'favorite_team': current_user.favorite_team,
             # Add more column-value pairs as needed
         }
 
@@ -207,7 +208,7 @@ def edit_profile():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
-        form.favorite_team.data = current_user.favorite_team
+        # form.favorite_team.data = current_user.favorite_team
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
 
