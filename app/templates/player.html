@@ -94,9 +94,45 @@
             }
         }
 
-        // Function to handle column sorting with ascending and descending order
+        // // Function to handle column sorting with ascending and descending order
+        // function sortTable(tableId, columnIndex) {
+        //     var table, rows, switching, i, x, y, shouldSwitch, dir, switchCount = 0;
+        //     table = document.getElementById(tableId);
+        //     switching = true;
+        //     dir = "asc"; // Set initial sorting direction to ascending
+        //     while (switching) {
+        //         switching = false;
+        //         rows = table.rows;
+        //         for (i = 1; i < rows.length - 1; i++) {
+        //             shouldSwitch = false;
+        //             x = rows[i].getElementsByTagName("td")[columnIndex];
+        //             y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+        //             if (dir === "asc") {
+        //                 if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        //                     shouldSwitch= true;
+        //                     break;
+        //                 }
+        //             } else if (dir === "desc") {
+        //                 if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+        //                     shouldSwitch= true;
+        //                     break;
+        //                 }
+        //             }
+        //         }
+        //         if (shouldSwitch) {
+        //             rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        //             switching = true;
+        //             switchCount++;
+        //         } else {
+        //             if (switchCount === 0 && dir === "asc") {
+        //                 dir = "desc";
+        //                 switching = true;
+        //             }
+        //         }
+        //     }
+        // }
         function sortTable(tableId, columnIndex) {
-            var table, rows, switching, i, x, y, shouldSwitch, dir, switchCount = 0;
+            var table, rows, switching, i, shouldSwitch, dir, switchCount = 0;
             table = document.getElementById(tableId);
             switching = true;
             dir = "asc"; // Set initial sorting direction to ascending
@@ -105,16 +141,21 @@
                 rows = table.rows;
                 for (i = 1; i < rows.length - 1; i++) {
                     shouldSwitch = false;
-                    x = rows[i].getElementsByTagName("td")[columnIndex];
-                    y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+                    var x = rows[i].getElementsByTagName("td")[columnIndex].textContent.trim();
+                    var y = rows[i + 1].getElementsByTagName("td")[columnIndex].textContent.trim();
+                    var isNumericX = !isNaN(x);
+                    var isNumericY = !isNaN(y);
+
                     if (dir === "asc") {
-                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                            shouldSwitch= true;
+                        if ((isNumericX && isNumericY && parseFloat(x) > parseFloat(y)) ||
+                            (!isNumericX && !isNumericY && x > y)) {
+                            shouldSwitch = true;
                             break;
                         }
                     } else if (dir === "desc") {
-                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                            shouldSwitch= true;
+                        if ((isNumericX && isNumericY && parseFloat(x) < parseFloat(y)) ||
+                            (!isNumericX && !isNumericY && x < y)) {
+                            shouldSwitch = true;
                             break;
                         }
                     }
@@ -145,7 +186,7 @@
 <h1>Batting Stats</h1>
 <div class="collapsible" onclick="toggleSection('battingStats')">Batting Statistics</div>
 <div id="battingStats" class="content">
-    <table id="">
+    <table id="battingTable">
         <tr>
             <th onclick="sortTable('battingTable', 0)">Year</th>
             <th onclick="sortTable('battingTable', 1)">Team</th>
@@ -228,7 +269,7 @@
         {% for f in fielding if f.yearID == fielder.yearID and f.teamID == fielder.teamID %}
         {% set _ = positions.append(f.position) %}
         {% for key, value in f.items() if key.startswith('f_') %}
-        {% if stats.get(key) is not none %}
+        {% if stats.get(key) is not none and value is not none %}
         {% set _ = stats.update({key: stats.get(key) + value}) %}
         {% endif %}
         {% endfor %}
@@ -259,11 +300,11 @@
     <table id="warTable">
         <tr>
             <th onclick="sortTable('warTable', 0)">Year</th>
-            <th onclick="sortTable('warTable', 5)">Team</th>
-            <th onclick="sortTable('warTable', 1)">Stint</th>
-            <th onclick="sortTable('warTable', 2)">Pitch WAR 162</th>
-            <th onclick="sortTable('warTable', 3)">Bat WAR 162</th>
-            <th onclick="sortTable('warTable', 4)">WAR 162</th>
+            <th onclick="sortTable('warTable', 1)">Team</th>
+            <th onclick="sortTable('warTable', 2)">Stint</th>
+            <th onclick="sortTable('warTable', 3)">Pitch WAR 162</th>
+            <th onclick="sortTable('warTable', 4)">Bat WAR 162</th>
+            <th onclick="sortTable('warTable', 5)">WAR 162</th>
         </tr>
         {% for war_stat in war %}
         <tr>

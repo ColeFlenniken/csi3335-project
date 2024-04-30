@@ -252,8 +252,11 @@ def getPitchingInfoByTeamIDandYearID(teamID: str, yearID: int) -> list[dict[str,
 
             # Calculate additional stats
             innings_pitched = int(row[15]) / 3  # p_IPOuts / 3
-            whip = (int(row[14]) + int(row[9])) / innings_pitched  # (p_BB + p_H) / innings_pitched
-            strikeouts_per_9 = (int(row[12]) / innings_pitched) * 9  # (p_SO / innings_pitched) * 9
+            whip = 0
+            strikeouts_per_9 = 0
+            if innings_pitched != 0:
+                whip = (int(row[14]) + int(row[9])) / innings_pitched  # (p_BB + p_H) / innings_pitched
+                strikeouts_per_9 = (int(row[12]) / innings_pitched) * 9  # (p_SO / innings_pitched) * 9
 
             line["p_IP"] = f"{innings_pitched:.1f}"  # Format innings_pitched to 1 decimal place
             line["p_WHIP"] = f"{whip:.3f}"  # Format WHIP to 3 decimal places
@@ -345,7 +348,7 @@ def getPlayerFieldingInfo(playerID: str) -> list[dict[str, str]]:
             line["teamID"] = row[3]
             line["position"] = row[4]
             line["f_G"] = row[5]
-            line["f_Gs"] = row[6]
+            line["f_GS"] = row[6]
             line["f_InnOuts"] = row[7]
             line["f_PO"] = row[8]
             line["f_A"] = row[9]
