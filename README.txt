@@ -73,8 +73,9 @@ This concatenation is what you see in the teamSpencer.sql file.
 3. WAR statistics have been added for the players. stats include pitching, fielding, and overall
 WAR per 162 games. These statistics can be viewed for a specific player by navigating to their player page.
 
-4. A secret surprise by pressing the rainbow button in the middle of the index page
+4. A secret surprise by pressing the rainbow button in the middle of the index page. IT IS A VERY TINY DOT IN THE MIDDLE OF THE PAGE
 
 5. A toggleable option for showing advanced stats for a team
 
+6. Website user profite with last seen date and an editable about me section
 
