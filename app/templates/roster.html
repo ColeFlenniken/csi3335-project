@@ -253,7 +253,7 @@
 <!--                <td>{{ player.b_HBP }}</td>-->
 <!--                <td>{{ player.b_SF }}</td>-->
                 <td>{% if player.b_AB > 0 %}{{ "%.3f"|format(player.b_H / player.b_AB) }}{% else %}0.000{% endif %}</td>  <!-- Batting Average -->
-                <td>{% if player.b_AB + player.b_BB + player.b_HBP + player.b_SF > 0 %}{{ "%.3f"|format((player.b_H + player.b_BB + player.b_HBP) / (player.b_AB + player.b_BB + player.b_HBP + player.b_SF)) }}{% else %}0.000{% endif %}</td>  <!-- On-Base % -->
+                <td>{% if player.b_AB is not none and player.b_BB is not none and player.b_HBP is not none and player.b_SF is not none and (player.b_AB + player.b_BB + player.b_HBP + player.b_SF > 0) %}{{ "%.3f"|format((player.b_H + player.b_BB + player.b_HBP) / (player.b_AB + player.b_BB + player.b_HBP + player.b_SF)) }}{% else %}0.000{% endif %}</td>  <!-- On-Base % -->
                 <td>{% if player.b_AB > 0 %}{{ "%.3f"|format((player.b_H + player.b_2B + 2 * player.b_3B + 3 * player.b_HR) / player.b_AB) }}{% else %}0.000{% endif %}</td>  <!-- Slugging % -->
             </tr>
             {% set _ = processed_players.append(player.nameFirst) %}
