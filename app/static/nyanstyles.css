@@ -36,4 +36,14 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     transition: transform 0.5s ease-in-out;
+    animation: rainbowPet 5s infinite; /* Apply rainbow animation to pet */
+}
+
+@keyframes rainbowPet {
+    0% {
+        filter: hue-rotate(0deg); /* Start with original color */
+    }
+    100% {
+        filter: hue-rotate(360deg); /* Rotate through hues for full rainbow effect */
+    }
 }
