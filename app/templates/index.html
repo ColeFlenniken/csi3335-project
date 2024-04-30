@@ -39,4 +39,39 @@
             });
         });
     </script>
+<script>
+    function nyancat() {
+        document.getElementById("myButton").addEventListener("click", function () {
+            window.location.href = "{{ url_for('nyancat') }}";
+        });
+    }
+</script>
+<style>
+    #myButton {
+        position: fixed;
+        top: 50%;
+        right: 50vw;
+        transform: translateY(-50%);
+        padding: 2px;
+        font-size: 14px;
+        background-color: #007bff; /* Blue button color */
+        color: #fff; /* White text color */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 3px;
+        animation: rainbow 5s infinite; /* Apply rainbow animation */
+    }
+
+    @keyframes rainbow {
+        0% { background-color: #ff0000; } /* Red */
+        20% { background-color: #ff7f00; } /* Orange */
+        40% { background-color: #ffff00; } /* Yellow */
+        60% { background-color: #00ff00; } /* Green */
+        80% { background-color: #0000ff; } /* Blue */
+        100% { background-color: #8a2be2; } /* Violet */
+    }
+</style>
+<h1>Hi, {{ current_user.username }}!</h1>
+<button type="button" id="myButton" onclick="nyancat()"></button>
 {% endblock %}
